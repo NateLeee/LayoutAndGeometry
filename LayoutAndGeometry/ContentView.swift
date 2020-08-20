@@ -10,15 +10,17 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        HStack(alignment: .firstTextBaseline) {
-            Text("Live")
-                .font(.caption)
-            Text("long")
-            Text("and")
-                .font(.title)
-            Text("prosper")
-                .font(.largeTitle)
+        VStack(alignment: .leading) {
+            Text("Hello, world!")
+                .alignmentGuide(.leading) { (d) -> CGFloat in
+                    d[.trailing]
+            }
+            
+            Text("This is a longer line of text")
         }
+        .background(Color.red)
+        .frame(width: 400, height: 400)
+        .background(Color.blue)
     }
 }
 
