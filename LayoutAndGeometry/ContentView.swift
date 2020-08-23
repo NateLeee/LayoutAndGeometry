@@ -11,12 +11,45 @@ import SwiftUI
 
 
 
+struct OuterView: View {
+    var body: some View {
+        VStack {
+            Text("OuterView Top") // ✅
+            
+            InnerView() // ✅
+                .background(Color.green)
+            
+            Text("OuterView Bottom") // ✅
+        }
+    }
+}
+
+struct InnerView: View {
+    var body: some View {
+        HStack {
+            Text("InnerView Left") // ✅
+            
+            GeometryReader { geo in
+                Text("InnerView GeometryReader Center")
+                    .background(Color.blue) // ✅
+                    .onTapGesture {
+                        print("Global center: \(geo.frame(in: .global).midX) x \(geo.frame(in: .global).midY)")
+                        print("Custom center: \(geo.frame(in: .named("Custom")).midX) x \(geo.frame(in: .named("Custom")).midY)")
+                        print("Local center: \(geo.frame(in: .local).midX) x \(geo.frame(in: .local).midY)")
+                }
+            }
+            .background(Color.orange) // ✅
+            
+            Text("InnerView Right") // ✅
+        }
+    }
+}
+
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            // .position(x: 100, y: 100) // Results in a bigger view.
-            .background(Color.red)
-            .offset(x: 100, y: 100)
+        OuterView()
+            .background(Color.red) // ✅
+            .coordinateSpace(name: "Custom") // ???
     }
 }
 
