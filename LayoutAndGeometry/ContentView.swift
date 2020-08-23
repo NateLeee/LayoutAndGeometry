@@ -15,24 +15,31 @@ struct ContentView: View {
     
     var body: some View {
         GeometryReader { fullView in
-            ScrollView(.vertical) {
-                ForEach(0 ..< 50) { index in
-                    GeometryReader { geo in
-                        Text("Row #\(index)")
-                            .font(.title)
-                            .frame(width: fullView.size.width)
-                            .background(self.colors[index % 7])
-                            .rotation3DEffect(
-                                .degrees(
-                                    Double(geo.frame(in: .global).minY - fullView.size.height / 2) / 5
-                                ), // ✅
-                                axis: (x: 0, y: 1, z: 0)
-                        )
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(0 ..< 50) { index in
+                        GeometryReader { geo in
+                            Rectangle()
+                                .fill(self.colors[index % 7])
+                                .frame(height: 150)
+                                .rotation3DEffect(
+                                    .degrees(
+                                        -Double(
+                                            geo.frame(in: .global).midX - fullView.size.width / 2
+                                            ) / 9
+                                    ),
+                                    axis: (x: 0, y: 1, z: 0)
+                            )
+                        }
+                        .frame(width: 150)
+                        .border(Color.red, width: 1)
                     }
-                    .frame(height: 40)
                 }
+                .padding(.horizontal, (fullView.size.width - 150) / 2)
+                .border(Color.blue, width: 1)
             }
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
